@@ -66,9 +66,10 @@ void loop() {
   float VY = (YCorrected/1023.0*3.3);
   float VZ = (ZCorrected/1023.0*3.3);
   
-  float Xg = VX*7.281;  //converts corrected volts into gees for g-select mode (gs pin)(g forces)
-  float Yg = VY*7.281;
-  float Zg = ((VZ*7.281)+1);
+ 
+  float Xg = VX*1.875;  //converts corrected volts into gees for g-select mode (gs pin)(g forces)
+  float Yg = VY*1.875;
+  float Zg = ((VZ*1.875)+1);
     
   Serial.print(Xg);    //this can be deleted - but allows us to see if accelerometer is calibrated
   Serial.print(",");
