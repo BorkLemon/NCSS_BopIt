@@ -4,9 +4,6 @@ const int ACCEL_PIN_Z = A2;
 
 const float PUNCH_SPIKE_HIGH = 4;
 const float PUNCH_SPIKE_LOW = 0.5;
-const float PUNCH_AVG = 2;
-const float PUNCH_AVG_DEVIATION = 0.4;
-
 bool punchSpike = false;
 
 void setup() {
