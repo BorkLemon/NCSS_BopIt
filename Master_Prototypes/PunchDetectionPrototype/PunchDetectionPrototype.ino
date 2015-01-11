@@ -9,6 +9,7 @@ const float PUNCH_AVG_DEVIATION = 0.4;
 
 bool punchSpike = false;
 bool punchFall = false;
+int punchFallTime;
 
 void setup() {
   Serial.begin(9600);
@@ -23,7 +24,10 @@ void loop() {
 }
 
 bool punch() {
-       // load accelerometer gees from x axis
+  if(millis() > punchFallTime)
+    punchFall = false;
+  
+  // load accelerometer gees from x axis
   float geesX = readGees(ACCEL_PIN_X);
   
   // Detects a spike in the x axis as a punching action
@@ -38,7 +42,7 @@ bool punch() {
     }
     else {
       punchFall = true;
-      punchFallTime = millis() + 100
+      punchFallTime = millis() + 100;
     }
   } 
 }
