@@ -52,8 +52,22 @@ void calibrationSetup() {
 
 // END REMOVE!!!!
 
+// BLUETOOTH CODE
+#include <SoftwareSerial.h>
 
+const int RxD = 6;
+const int TxD = 7;
 
+const char ROBOT_FORWARD = '1';
+
+SoftwareSerial btSerial(RxD, TxD);
+
+void bluetoothSetup() {
+  btSerial.begin(38400);
+  pinMode(RxD, INPUT);
+  pinMode(TxD, OUTPUT);
+}
+//
 
 
 
@@ -62,8 +76,8 @@ const int ACCEL_PIN_Y = A1;
 const int ACCEL_PIN_Z = A2;
 
 // CAUSES CALIBRATION ISSUES!!!
-const float PUNCH_SPIKE_HIGH = 2;
-const float PUNCH_SPIKE_LOW = -2;
+const float PUNCH_SPIKE_HIGH = 1.9;
+const float PUNCH_SPIKE_LOW = -1.9;
 const float JUMP_SPIKE_HIGH = 1.2;
 const float JUMP_SPIKE_LOW = -1.5;
 //
@@ -74,23 +88,27 @@ bool jumpLow = false;
 
 void setup() {
   Serial.begin(9600);
-  calibrationSetup();
-
+  bluetoothSetup();    // RELIES ON BLUETOOTH CODE
+  calibrationSetup();  // RELIES ON CALIBRATION CODE
 }
 
 void loop() {
-  jump();
-  punch();
+  
+  // Checks if the player is punching or jumping and moves the robot forward
+  if(jump() || punch()) {
+    btSerial.write(ROBOT_FORWARD); // RELIES ON BLUETOOTH CODE
+    Serial.println("check");
+  }
 }
 
 // Detects a jumping action
 bool jump() {
   
   // get accelerometer value from z axis
-  float geesZ = readGees(ACCEL_PIN_Z, Zave); // Zave DEPENDENT ON CALIBRATION CODE
+  float geesY = readGees(ACCEL_PIN_Y, Yave); // Zave DEPENDENT ON CALIBRATION CODE
   // Detects a spike in the Z axis as a jumping action
   
-  if (geesZ > JUMP_SPIKE_HIGH) {
+  if (geesY > JUMP_SPIKE_HIGH) {
     if (jumpLow) {
       Serial.println("JUMP DETECTED");
       jumpLow = false;
@@ -101,7 +119,7 @@ bool jump() {
   }
   
   // Detects a drop in the Z axis to confirm the end of the jump
-  if (geesZ < JUMP_SPIKE_LOW && jumpSpike) {
+  if (geesY < JUMP_SPIKE_LOW && jumpSpike) {
       jumpSpike = false;
       jumpLow = true;
   } 
@@ -115,15 +133,15 @@ bool punch() {
   // TODO (OPTIONAL) Add policing for backward punches
   
   // load accelerometer gees from x axis
-  float geesX = readGees(ACCEL_PIN_X, Xave); // Xave DEPENDENT ON CALIBRATION CODE
+  float geesY = readGees(ACCEL_PIN_Y, Yave); // Xave DEPENDENT ON CALIBRATION CODE
 
   // Detects a spike in the x axis as a punching action
-  if (geesX > PUNCH_SPIKE_HIGH) {
+  if (geesY > PUNCH_SPIKE_HIGH) {
     punchSpike = true;
   }
   
   // Detects a dip in the x axis to confirm the end of the punching action
-  if (geesX < PUNCH_SPIKE_LOW && punchSpike) {
+  if (geesY < PUNCH_SPIKE_LOW && punchSpike) {
       Serial.println("PUNCH DETECTED");
       punchSpike = false;
       return true;
@@ -131,6 +149,36 @@ bool punch() {
   
   // Occurs when a punch is not detected
   return false;
+}
+
+// Detects an arm raising action NOT YET PROPERLY IMPLEMENTED
+boolean ARaise(){ //Returns T or F based on whether the movement sent was a valid bow
+  
+  float x = readGees(ACCEL_PIN_X, Xave);
+  float y = readGees(ACCEL_PIN_Y, Yave);
+  float z = readGees(ACCEL_PIN_Z, Zave);
+  
+  Serial.print(y);
+  Serial.print("--");
+  Serial.print(z);
+  Serial.println();
+  
+  if (!ARaiseStart && y > z){
+    ARaiseStart = true;
+    // IMPLEMENT LATER
+//    tone(BUZZPIN,400,500);
+//    Serial.println("Hooray - start");
+//    delay(500);
+  }
+  else if(ARaiseStart && z>y){
+    Serial.println("Hooray - finish");
+    ARaiseStart = false;
+    return true;
+  }
+  else{
+    return false;
+  }
+  //If we're going to use this function more than once we need to set ARaiseStart to false before we enter the loop
 }
 
 // Read analog input from accelerometer in gees
