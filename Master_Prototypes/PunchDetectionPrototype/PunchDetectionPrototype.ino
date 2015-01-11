@@ -7,17 +7,49 @@ const float PUNCH_SPIKE_LOW = 0.5;
 const float PUNCH_AVG = 2;
 const float PUNCH_AVG_DEVIATION = 0.4;
 
+const float JUMP_SPIKE_HIGH = 3.5;
+const float JUMP_SPIKE_LOW = 2;
+
 bool punchSpike = false;
+bool jumpSpike = false;
+bool jumpLow = false;
 
 void setup() {
   Serial.begin(9600);
   
 }
-
 void loop() {
-  punch();
-  
+ // float GeesZ = readGees(ACCEL_PIN_Z);  
+ // Serial.println(GeesZ);
+ // delay(100);
+  jump();
 }
+
+// Detects a jumping action
+bool jump() {
+  
+  // get accelerometer value from z axis
+  float geesZ = readGees(ACCEL_PIN_Z);
+  // Detects a spike in the Z axis as a jumping action
+  if (geesZ > JUMP_SPIKE_HIGH) {
+    if (jumpLow) {
+      Serial.println("JUMP DETECTED");
+      jumpLow = false;
+      return true;
+    }
+    else
+      jumpSpike = true;
+  }
+  
+  // Detects a drop in the Z axis to confirm the end of the jump
+  if (geesZ < JUMP_SPIKE_LOW && jumpSpike) {
+      jumpSpike = false;
+      jumpLow = true;
+  } 
+  // Occurs when a jump is not detected
+  return false;
+}
+
 
 // Detects a 'punching' action
 bool punch() {
