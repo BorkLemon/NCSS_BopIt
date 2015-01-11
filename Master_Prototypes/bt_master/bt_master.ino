@@ -1,3 +1,17 @@
+/*commands (that should work) :
+
+0 --> motor moves backwards
+1 --> motor moves forwards
+2 --> red (RGB led)
+3 --> green (RGB led)
+4 --> blue (RGB led)
+5 --> clear all (RGB led)
+6 --> aution buzzer
+7 --> fail buzzer
+8 --> success
+9 --> stop motor function*/
+
+
 #include <SoftwareSerial.h>
 
 const int RxD = 6;
@@ -13,12 +27,6 @@ void setup(){
 }
 
 void loop(){
-    if(btSerial.available()) {
-       while(btSerial.available()) {
-          Serial.write(btSerial.read());
-          delay(10);
-       } 
-    }
     if(Serial.available()) {
       while(Serial.available()) {
         btSerial.write(Serial.read());
