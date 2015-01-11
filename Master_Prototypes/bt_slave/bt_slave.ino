@@ -71,8 +71,10 @@ void motor(int l, int r) {
   servoLeft.writeMicroseconds(l);            // Left wheel clockwise
   servoRight.writeMicroseconds(r);           // Right wheel counterclockwise
   delay(3000);
+  servoLeft.detach();                        // detach the wheels to stop the robot
+  servoRight.detach();
 }
 
 void ton(int t, int d) {
-  tone(4, t, d);                             // play tonbe
+  tone(4, t, d);                             // play tone
 }
