@@ -52,8 +52,22 @@ void calibrationSetup() {
 
 // END REMOVE!!!!
 
+// BLUETOOTH CODE
+#include <SoftwareSerial.h>
 
+const int RxD = 6;
+const int TxD = 7;
 
+const char ROBOT_FORWARD = '1';
+
+SoftwareSerial btSerial(RxD, TxD);
+
+void bluetoothSetup() {
+  btSerial.begin(38400);
+  pinMode(RxD, INPUT);
+  pinMode(TxD, OUTPUT);
+}
+//
 
 
 
@@ -62,8 +76,8 @@ const int ACCEL_PIN_Y = A1;
 const int ACCEL_PIN_Z = A2;
 
 // CAUSES CALIBRATION ISSUES!!!
-const float PUNCH_SPIKE_HIGH = 2;
-const float PUNCH_SPIKE_LOW = -2;
+const float PUNCH_SPIKE_HIGH = 1.9;
+const float PUNCH_SPIKE_LOW = -1.9;
 const float JUMP_SPIKE_HIGH = 1.2;
 const float JUMP_SPIKE_LOW = -1.5;
 //
@@ -74,13 +88,17 @@ bool jumpLow = false;
 
 void setup() {
   Serial.begin(9600);
-  calibrationSetup();
-
+  bluetoothSetup();    // RELIES ON BLUETOOTH CODE
+  calibrationSetup();  // RELIES ON CALIBRATION CODE
 }
 
 void loop() {
-  jump();
-  punch();
+  
+  // Checks if the player is punching or jumping and moves the robot forward
+  if(jump() || punch()) {
+    btSerial.write(ROBOT_FORWARD); // RELIES ON BLUETOOTH CODE
+    Serial.println("check");
+  }
 }
 
 // Detects a jumping action
