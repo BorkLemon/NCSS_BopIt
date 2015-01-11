@@ -8,24 +8,20 @@ const float PUNCH_AVG = 2;
 const float PUNCH_AVG_DEVIATION = 0.4;
 
 bool punchSpike = false;
-bool punchFall = false;
-int punchFallTime;
 
 void setup() {
   Serial.begin(9600);
-
-}
-
-
-
-void loop() {
-
   
 }
 
+void loop() {
+  punch();
+  
+}
+
+// Detects a 'punching' action
 bool punch() {
-  if(millis() > punchFallTime)
-    punchFall = false;
+  // TODO (OPTIONAL) Add policing for backward punches
   
   // load accelerometer gees from x axis
   float geesX = readGees(ACCEL_PIN_X);
@@ -35,16 +31,15 @@ bool punch() {
     punchSpike = true;
   }
   
-  if (geesX < PUNCH_SPIKE_LOW) {
-    if (punchSpike) {
+  // Detects a dip in the x axis to confirm the end of the punching action
+  if (geesX < PUNCH_SPIKE_LOW && punchSpike) {
       punchSpike = false;
+      return true;
       Serial.println("PUNCH DETECTED");
-    }
-    else {
-      punchFall = true;
-      punchFallTime = millis() + 100;
-    }
   } 
+  
+  // Occurs when a punch is not detected
+  return false;
 }
 
 // Read analog input from accelerometer in gees
