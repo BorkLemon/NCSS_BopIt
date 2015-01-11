@@ -151,6 +151,36 @@ bool punch() {
   return false;
 }
 
+// Detects an arm raising action NOT YET PROPERLY IMPLEMENTED
+boolean ARaise(){ //Returns T or F based on whether the movement sent was a valid bow
+  
+  float x = readGees(ACCEL_PIN_X, Xave);
+  float y = readGees(ACCEL_PIN_Y, Yave);
+  float z = readGees(ACCEL_PIN_Z, Zave);
+  
+  Serial.print(y);
+  Serial.print("--");
+  Serial.print(z);
+  Serial.println();
+  
+  if (!ARaiseStart && y > z){
+    ARaiseStart = true;
+    // IMPLEMENT LATER
+//    tone(BUZZPIN,400,500);
+//    Serial.println("Hooray - start");
+//    delay(500);
+  }
+  else if(ARaiseStart && z>y){
+    Serial.println("Hooray - finish");
+    ARaiseStart = false;
+    return true;
+  }
+  else{
+    return false;
+  }
+  //If we're going to use this function more than once we need to set ARaiseStart to false before we enter the loop
+}
+
 // Read analog input from accelerometer in gees
 float readGees(int pin, int correction) {
    int input = analogRead(pin) - correction; // ADDED CORRECTION CODE FROM CALLIBRATION
