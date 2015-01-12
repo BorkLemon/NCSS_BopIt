@@ -12,6 +12,7 @@ const int PUNCH = 1; // red
 const int JUMP = 2;  // green
 const int MAX_COMMAND = JUMP;
 
+bool gameStarted = false;
 int current_action = NONE;
 int past_time;
 
@@ -25,24 +26,19 @@ void setup() {
 
 void loop() {
   // IF PLAYER TIMES OUT BEFORE COMPLETING ACTION, ACTION STATES WILL NOT BE RESET
-  
-  // player fails the action  
- 
-//  jump();
-//  
-//  if(punch()) {
-//     btSerial.write(FORWARDS);
-//  }
 
+  if (millis() > past_time + TIME_LIMIT && gameStarted) {
+    Serial.println("GOING BACKWARDS");
+    btSerial.write(BACKWARDS);
+    assignAction();
+  }
 
-  //jump();
-//  if (millis() > past_time + TIME_LIMIT) {
-//    
-//  }
-//  
 
   if ((current_action == PUNCH && punch()) ||
     (current_action == JUMP && jump())) {
+    
+    Serial.println("GOING FORWARDS");
+    gameStarted = true;
     btSerial.write(FORWARDS);
     assignAction();
   }
