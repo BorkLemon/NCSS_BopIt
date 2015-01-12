@@ -1,7 +1,36 @@
 #include "Actions.h"
 #include "Accelerometer_Auto_Calibrated.h"
 
-// Detects a jumping action
+// Detects an arm raising action (NON_FUNCTIONAL)
+bool armRaise(){ //Returns T or F based on whether the movement sent was a valid bow
+  
+  float geesY = readGees(ACCEL_PIN_Y, yCorrection);
+  float geesZ = readGees(ACCEL_PIN_Z, zCorrection);
+  
+  Serial.println(geesY);
+  Serial.print(",");
+  Serial.print(geesZ);
+  
+  // Detect if the arm is in the starting position
+  if (!armRaiseStart && (geesY > geesZ)){
+    armRaiseStart = true;
+      //  IMPLEMENT LATER
+//  tone(BUZZPIN,400,500);
+    //Serial.println("Hooray - start");
+  }
+  
+  // Check if the arm is in the arm raised position
+  else if(armRaiseStart && (geesZ > geesY)){
+    // Serial.println("Hooray - finish");
+    armRaiseStart = false;
+    return true;
+  }
+  
+  // Arm raise not detected
+  return false;
+}
+
+// Detects a jumping action (FUNCTIONAL)
 bool jump() {
   
   // get accelerometer value from z axis
@@ -28,7 +57,7 @@ bool jump() {
 }
 
 
-// Detects a 'punching' action
+// Detects a 'punching' action (FUNCTIONAL)
 bool punch() {
   // TODO (OPTIONAL) Add policing for backward punches
   
@@ -49,36 +78,6 @@ bool punch() {
   
   // Occurs when a punch is not detected
   return false;
-}
-
-// Detects an arm raising action NOT YET PROPERLY IMPLEMENTED
-bool ARaise(){ //Returns T or F based on whether the movement sent was a valid bow
-  
-  float x = readGees(ACCEL_PIN_X, xCorrection);
-  float y = readGees(ACCEL_PIN_Y, yCorrection);
-  float z = readGees(ACCEL_PIN_Z, zCorrection);
-  
-  Serial.print(y);
-  Serial.print("--");
-  Serial.print(z);
-  Serial.println();
-  
-  if (!ARaiseStart && y > z){
-    ARaiseStart = true;
-    // IMPLEMENT LATER
-//    tone(BUZZPIN,400,500);
-//    Serial.println("Hooray - start");
-//    delay(500);
-  }
-  else if(ARaiseStart && z>y){
-    Serial.println("Hooray - finish");
-    ARaiseStart = false;
-    return true;
-  }
-  else{
-    return false;
-  }
-  //If we're going to use this function more than once we need to set ARaiseStart to false before we enter the loop
 }
 
 // Read analog input from accelerometer in gees

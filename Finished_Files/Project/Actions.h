@@ -19,10 +19,10 @@ bool jump();
 // Detect punch action
 bool punch();
 
-bool ARaiseStart = false;
+bool armRaiseStart = false;
 
 // Detect arm raise
-bool ARaise();
+bool armRaise();
 
 float readGees(int pin, int correction);
 

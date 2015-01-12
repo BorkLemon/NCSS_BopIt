@@ -1,6 +1,6 @@
 #include "Rand_Func.h"
 
-int randomise(float num){
+int randomise(int num){
   return millis() % num;
 }
 
