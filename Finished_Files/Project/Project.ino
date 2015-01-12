@@ -17,9 +17,8 @@ int past_time;
 
 void setup() {
   Serial.begin(9600);
-  //bluetoothSetup();    // RELIES ON BLUETOOTH CODE
+  bluetoothSetup();    // RELIES ON BLUETOOTH CODE
   calibrationSetup();  // RELIES ON CALIBRATION CODE
-
   
   //assignAction();
 }
@@ -28,7 +27,12 @@ void loop() {
   // IF PLAYER TIMES OUT BEFORE COMPLETING ACTION, ACTION STATES WILL NOT BE RESET
   
   // player fails the action  
-  punch();
+  if(punch()) {
+     btSerial.write(FORWARDS);
+  }
+  
+  
+  
   //jump();
 //  if (millis() > past_time + TIME_LIMIT) {
 //    
