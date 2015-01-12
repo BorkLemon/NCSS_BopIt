@@ -37,6 +37,8 @@ bool jump() {
   float geesY = readGees(ACCEL_PIN_Y, yCorrection); // Zave DEPENDENT ON CALIBRATION CODE
   // Detects a spike in the Z axis as a jumping action
   
+  Serial.println(geesY);
+  
   if (geesY > JUMP_SPIKE_HIGH) {
     if (jumpLow) {
       Serial.println("JUMP DETECTED");
@@ -61,15 +63,15 @@ bool jump() {
 bool punch() {
   // TODO (OPTIONAL) Add policing for backward punches
   
-  // load accelerometer gees from x axis
-  float geesY = readGees(ACCEL_PIN_Y, yCorrection); // Xave DEPENDENT ON CALIBRATION CODE
+  // load accelerometer gees from y axis
+  float geesY = readGees(ACCEL_PIN_Y, yCorrection); // yCorrection DEPENDENT ON CALIBRATION CODE
 
-  // Detects a spike in the x axis as a punching action
+  // Detects a spike in the y axis as a punching action
   if (geesY > PUNCH_SPIKE_HIGH) {
     punchSpike = true;
   }
   
-  // Detects a dip in the x axis to confirm the end of the punching action
+  // Detects a dip in the y axis to confirm the end of the punching action
   if (geesY < PUNCH_SPIKE_LOW && punchSpike) {
       Serial.println("PUNCH DETECTED");
       punchSpike = false;
