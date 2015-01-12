@@ -4,7 +4,7 @@
 // Contains communication codes for the robot
 
 const char LIGHT_ONE_RED = 'r';
-const char LIGHT_ONE_GREEN = 'b';
+const char LIGHT_ONE_GREEN = 'g';
 const char LIGHT_ONE_BLUE = 'b';
 const char LIGHT_ONE_OFF = 'x';
 

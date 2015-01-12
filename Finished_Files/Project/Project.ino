@@ -20,40 +20,40 @@ void setup() {
   bluetoothSetup();    // RELIES ON BLUETOOTH CODE
   calibrationSetup();  // RELIES ON CALIBRATION CODE
   
-  //assignAction();
+  assignAction();
 }
 
 void loop() {
   // IF PLAYER TIMES OUT BEFORE COMPLETING ACTION, ACTION STATES WILL NOT BE RESET
   
   // player fails the action  
-  jump();
-  
-  if(punch()) {
-     btSerial.write(FORWARDS);
-  }
-  
-  
-  
+ 
+//  jump();
+//  
+//  if(punch()) {
+//     btSerial.write(FORWARDS);
+//  }
+
+
   //jump();
 //  if (millis() > past_time + TIME_LIMIT) {
 //    
 //  }
 //  
-//  if ((current_action == PUNCH && punch()) ||
-//    (current_action == JUMP && jump())) {
-//    btSerial.write(FORWARDS);
-//    assignAction();
-//  }
+
+  if ((current_action == PUNCH && punch()) ||
+    (current_action == JUMP && jump())) {
+    btSerial.write(FORWARDS);
+    assignAction();
+  }
   
 }
 
 void assignAction() {
-  int action = randomise(3);
+  int action = randomise(2) + 1;
  
   btSerial.write(LIGHT_ONE_OFF);
   btSerial.write(LIGHT_TWO_OFF);
-  
   switch(action) {
     case PUNCH: btSerial.write(LIGHT_ONE_RED); break;
     case JUMP: btSerial.write(LIGHT_ONE_GREEN); break;
