@@ -33,7 +33,6 @@ void loop() {
     assignAction();
   }
 
-
   if ((current_action == PUNCH && punch()) ||
     (current_action == JUMP && jump())) {
     
@@ -51,8 +50,14 @@ void assignAction() {
   btSerial.write(LIGHT_ONE_OFF);
   btSerial.write(LIGHT_TWO_OFF);
   switch(action) {
-    case PUNCH: btSerial.write(LIGHT_ONE_RED); break;
-    case JUMP: btSerial.write(LIGHT_ONE_GREEN); break;
+    case PUNCH: 
+      btSerial.write(LIGHT_ONE_RED); 
+      Serial.println("Punch now:");
+    break;
+    case JUMP: 
+      btSerial.write(LIGHT_ONE_GREEN); 
+      Serial.println("Jump now:");
+    break;
   }
   
   past_time = millis();

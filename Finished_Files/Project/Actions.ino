@@ -14,14 +14,12 @@ bool armRaise(){ //Returns T or F based on whether the movement sent was a valid
   // Detect if the arm is in the starting position
   if (!armRaiseStart && (geesY > geesZ)){
     armRaiseStart = true;
-      //  IMPLEMENT LATER
-//  tone(BUZZPIN,400,500);
-    //Serial.println("Hooray - start");
+    Serial.println("Hooray - start");
   }
   
   // Check if the arm is in the arm raised position
   else if(armRaiseStart && (geesZ > geesY)){
-    // Serial.println("Hooray - finish");
+    Serial.println("Hooray - finish");
     armRaiseStart = false;
     return true;
   }
@@ -34,10 +32,10 @@ bool armRaise(){ //Returns T or F based on whether the movement sent was a valid
 bool jump() {
   
   // get accelerometer value from z axis
-  float geesZ = readGees(ACCEL_PIN_Z, zCorrection); // Zave DEPENDENT ON CALIBRATION CODE
+  float geesY = readGees(ACCEL_PIN_Y, zCorrection); // Zave DEPENDENT ON CALIBRATION CODE
   // Detects a spike in the Z axis as a jumping action
     
-  if (geesZ > JUMP_SPIKE_HIGH) {
+  if (geesY > JUMP_SPIKE_HIGH) {
     if (jumpLow) {
       Serial.println("JUMP DETECTED");
       jumpLow = false;
@@ -48,7 +46,7 @@ bool jump() {
   }
   
   // Detects a drop in the Z axis to confirm the end of the jump
-  if (geesZ < JUMP_SPIKE_LOW && jumpSpike) {
+  if (geesY < JUMP_SPIKE_LOW && jumpSpike) {
       jumpSpike = false;
       jumpLow = true;
   } 
