@@ -11,6 +11,7 @@ long et = 1;
 
 int f = 0;
 int b = 0;
+int alt = 1;
 
 int tru = 0;
 
@@ -28,6 +29,7 @@ void setup() {
   pinMode(4, OUTPUT);
   pinMode(5, OUTPUT);
   pinMode(11, OUTPUT);
+  digitalWrite(8, HIGH);digitalWrite(3, HIGH);digitalWrite(10, HIGH);digitalWrite(5, HIGH);
   Serial.println("running");
 }
 
@@ -37,6 +39,7 @@ void loop() {
   if (btSerial.available()) {
     //stuff
     while (btSerial.available()) {
+      if(alt == 1){digitalWrite(8, LOW);digitalWrite(3, LOW);digitalWrite(10, LOW);digitalWrite(5, LOW);alt=0;}
       int i = btSerial.read();
       Serial.println(i);
       if (millis() < 10) {
@@ -56,7 +59,7 @@ void loop() {
           et = 1;
         }
         b = 1;
-        motor(1600, 1300);
+        motor(1300, 1700);
       }
       if ( i == '1' ) {                     // if 1 received from sensor, forward
         happytone();
@@ -70,7 +73,7 @@ void loop() {
         }
         Serial.println("run!");
         f = 1;
-        motor(1200, 1700);
+        motor(1700, 1300);
       }
       if ( i == 'r' ) {
         digitalWrite(8, HIGH);
@@ -123,6 +126,7 @@ void loop() {
         b = 0;
         f = 0;
         tru = 0;
+        btSerial.println("Force reseteded!");
       }
     }
   }
@@ -133,7 +137,6 @@ void loop() {
     f = 0;
     b = 0;
   }
-  Serial.println(tru);
 }
 
 
@@ -156,21 +159,23 @@ void ton(int t, int d) {
 }
 
 void happytone() {
-  tone(11, 262, 400);
+  tone(11, 262, 150);
   delay(150);
-  tone(11, 330, 400);
+  tone(11, 330, 150);
   delay(150);
-  tone(11, 392, 400);
+  tone(11, 392, 150);
   delay(150);
   tone(11, 523, 400);
+  delay(400);
 }
 
 void sadtone() {
-  tone(11, 262, 400);
+  tone(11, 262, 150);
   delay(150);
-  tone(11, 196, 400);
+  tone(11, 196, 150);
   delay(150);
-  tone(11, 156, 400);
+  tone(11, 156, 150);
   delay(150);
   tone(11, 131, 400);
+  delay(400);
 }
