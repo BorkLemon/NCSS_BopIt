@@ -34,12 +34,10 @@ bool armRaise(){ //Returns T or F based on whether the movement sent was a valid
 bool jump() {
   
   // get accelerometer value from z axis
-  float geesY = readGees(ACCEL_PIN_Y, yCorrection); // Zave DEPENDENT ON CALIBRATION CODE
+  float geesZ = readGees(ACCEL_PIN_Z, zCorrection); // Zave DEPENDENT ON CALIBRATION CODE
   // Detects a spike in the Z axis as a jumping action
-  
-  Serial.println(geesY);
-  
-  if (geesY > JUMP_SPIKE_HIGH) {
+    
+  if (geesZ > JUMP_SPIKE_HIGH) {
     if (jumpLow) {
       Serial.println("JUMP DETECTED");
       jumpLow = false;
@@ -50,7 +48,7 @@ bool jump() {
   }
   
   // Detects a drop in the Z axis to confirm the end of the jump
-  if (geesY < JUMP_SPIKE_LOW && jumpSpike) {
+  if (geesZ < JUMP_SPIKE_LOW && jumpSpike) {
       jumpSpike = false;
       jumpLow = true;
   } 
@@ -65,7 +63,6 @@ bool punch() {
   
   // load accelerometer gees from y axis
   float geesY = readGees(ACCEL_PIN_Y, yCorrection); // yCorrection DEPENDENT ON CALIBRATION CODE
-  Serial.println(geesY);
 
   // Detects a spike in the y axis as a punching action
   if (geesY > PUNCH_SPIKE_HIGH) {

@@ -27,6 +27,8 @@ void loop() {
   // IF PLAYER TIMES OUT BEFORE COMPLETING ACTION, ACTION STATES WILL NOT BE RESET
   
   // player fails the action  
+  jump();
+  
   if(punch()) {
      btSerial.write(FORWARDS);
   }
