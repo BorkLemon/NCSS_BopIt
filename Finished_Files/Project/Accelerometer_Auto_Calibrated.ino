@@ -1,5 +1,6 @@
 #include "Accelerometer_Auto_Calibrated.h"
- 
+#include "Actions.h"
+
 float averages(int cals[]){    //Calulate float average - general
     float sum = 0.0;
     float average = 0.0;
@@ -18,9 +19,9 @@ void calibration (){  // autocalibrate the accelerometer
   int ZCal[NUM_Samples];
   int i;
   for (i = 0; i < NUM_Samples; i++){
-    XCal[i] = analogRead(A0);
-    YCal[i] = analogRead(A1);
-    ZCal[i] = analogRead(A2);
+    XCal[i] = analogRead(ACCEL_PIN_X);
+    YCal[i] = analogRead(ACCEL_PIN_Y);
+    ZCal[i] = analogRead(ACCEL_PIN_Z);
   }
   xCorrection = averages (XCal); //calculating and returning x average
   yCorrection = averages (YCal); //calculating and returning x average
@@ -34,15 +35,11 @@ void calibration (){  // autocalibrate the accelerometer
 
 
 void calibrationSetup() {
-  pinMode (A0, INPUT);
-  pinMode (A1, INPUT);
-  pinMode (A2, INPUT);
-  
   delay (1000);  //this avoids the spike in accelerometer when arduino turned on
   calibration();
-  analogRead(A0);
-  analogRead(A1);
-  analogRead(A2);
+  analogRead(ACCEL_PIN_X);
+  analogRead(ACCEL_PIN_Y);
+  analogRead(ACCEL_PIN_Z);
   delay (1000);
     //would be good to a beep at the end of setup so everyone knows it is complete
  }

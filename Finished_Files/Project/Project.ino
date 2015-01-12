@@ -26,13 +26,10 @@ void setup() {
 
 void loop() {
   // IF PLAYER TIMES OUT BEFORE COMPLETING ACTION, ACTION STATES WILL NOT BE RESET
-
-
-
   
   // player fails the action  
-  //punch();
-  jump();
+  punch();
+  //jump();
 //  if (millis() > past_time + TIME_LIMIT) {
 //    
 //  }

@@ -65,6 +65,7 @@ bool punch() {
   
   // load accelerometer gees from y axis
   float geesY = readGees(ACCEL_PIN_Y, yCorrection); // yCorrection DEPENDENT ON CALIBRATION CODE
+  Serial.println(geesY);
 
   // Detects a spike in the y axis as a punching action
   if (geesY > PUNCH_SPIKE_HIGH) {

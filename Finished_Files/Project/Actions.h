@@ -2,11 +2,11 @@
 #define _Actions_h
 
 #define ACCEL_PIN_X A0
-#define ACCEL_PIN_Y A1
-#define ACCEL_PIN_Z A2
+#define ACCEL_PIN_Y A2
+#define ACCEL_PIN_Z A5
 
-const float PUNCH_SPIKE_HIGH = 3.8;
-const float PUNCH_SPIKE_LOW = 0.1;
+const float PUNCH_SPIKE_HIGH = 1;
+const float PUNCH_SPIKE_LOW = -1;
 
 const float JUMP_SPIKE_HIGH = 1.2;
 const float JUMP_SPIKE_LOW = -1.5;
