@@ -15,7 +15,7 @@ const int MAX_COMMAND = ARM_RAISE;
 
 bool gameStarted = false;
 int current_action = NONE;
-int past_time;
+long past_time;        // IT NEEDED TO BE A GOD DAMNED LONG INTEGER!!! 
 
 void setup() {
   Serial.begin(9600);
@@ -27,10 +27,17 @@ void setup() {
 
 void loop() {
   // IF PLAYER TIMES OUT BEFORE COMPLETING ACTION, ACTION STATES WILL NOT BE RESET
+/*
+  Serial.print(analogRead(A5));
+  Serial.print(" ");
+  Serial.println(analogRead(A2));
 
-  if (millis() > past_time + TIME_LIMIT && gameStarted) {
+  return;
+*/
+  if ((millis() > (past_time + TIME_LIMIT)) && gameStarted) {
     Serial.println("GOING BACKWARDS");
     btSerial.write(BACKWARDS);
+    delay(3000);
     assignAction();
   }
 
@@ -41,6 +48,7 @@ void loop() {
     Serial.println("GOING FORWARDS");
     gameStarted = true;
     btSerial.write(FORWARDS);
+    delay(3000);
     assignAction();
   }
   

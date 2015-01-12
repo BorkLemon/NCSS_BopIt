@@ -1,4 +1,4 @@
-#ifndef _Robot_h
+#  _Robot_h
 #define _Robot_h
 
 // Contains communication codes for the robot
