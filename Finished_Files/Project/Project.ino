@@ -21,11 +21,15 @@ void setup() {
   bluetoothSetup();    // RELIES ON BLUETOOTH CODE
   calibrationSetup();  // RELIES ON CALIBRATION CODE
   
-  assignAction();
+  //assignAction();
 }
 
 void loop() {
   // IF PLAYER TIMES OUT BEFORE COMPLETING ACTION, ACTION STATES WILL NOT BE RESET
+
+  armRaise();
+
+  return;
 
   if (millis() > past_time + TIME_LIMIT && gameStarted) {
     Serial.println("GOING BACKWARDS");

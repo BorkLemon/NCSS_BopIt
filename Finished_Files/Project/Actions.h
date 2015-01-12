@@ -20,6 +20,11 @@ bool jump();
 // Detect punch action
 bool punch();
 
+const float ARM_RAISE_START_POS_Y = 0.9;
+const float ARM_RAISE_START_POS_Z = -1.8;
+const float ARM_RAISE_END_POS_Y = 0.2;
+const float ARM_RAISE_END_POS_Z = -1.2;
+
 bool armRaiseStart = false;
 
 // Detect arm raise

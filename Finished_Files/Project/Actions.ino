@@ -5,20 +5,26 @@
 bool armRaise(){ //Returns T or F based on whether the movement sent was a valid bow
   
   float geesY = readGees(ACCEL_PIN_Y, yCorrection);
-  float geesZ = readGees(ACCEL_PIN_Z, zCorrection);
+  float geesZ = readGees(ACCEL_PIN_Z, zCorrection) - 1; // Subtracting one to account for gravity removed in auto-calibration
   
-  Serial.println(geesY);
-  Serial.print(",");
-  Serial.print(geesZ);
-  
+//  Serial.print(geesY);
+//  Serial.print(" ");
+//  Serial.println(geesZ);
+    
   // Detect if the arm is in the starting position
-  if (!armRaiseStart && (geesY > geesZ)){
+  if (!armRaiseStart 
+    && (geesY > ARM_RAISE_START_POS_Y 
+    && geesZ < ARM_RAISE_START_POS_Z)){ // CHANGE VALUES WITH VARIABLES
+    
     armRaiseStart = true;
     Serial.println("Hooray - start");
   }
   
   // Check if the arm is in the arm raised position
-  else if(armRaiseStart && (geesZ > geesY)){
+  else if(armRaiseStart 
+    && (geesY < ARM_RAISE_END_POS_Y 
+    &&  geesY > ARM_RAISE_END_POS_Z)){ // CHANGE VALUES WITH VARIABLES
+  
     Serial.println("Hooray - finish");
     armRaiseStart = false;
     return true;
