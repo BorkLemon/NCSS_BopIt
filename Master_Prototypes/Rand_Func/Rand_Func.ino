@@ -4,11 +4,14 @@ void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
 }
-int Randomise(){
-  return millis()%NUM;
+
+int Randomise(float num){
+  return millis() % num;
 }
+
 void loop() {
   // put your main code here, to run repeatedly:
+  
   int r = Randomise(); 
   if (time_to_print<=millis()){
     Serial.print(r);
