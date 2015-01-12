@@ -12,6 +12,8 @@ long et = 1;
 int f = 0;
 int b = 0;
 
+int tru = 0;
+
 SoftwareSerial btSerial(RxD, TxD);
 
 void setup() {
@@ -22,6 +24,10 @@ void setup() {
   pinMode(8, OUTPUT);
   pinMode(9, OUTPUT);
   pinMode(10, OUTPUT);
+  pinMode(3, OUTPUT);
+  pinMode(4, OUTPUT);
+  pinMode(5, OUTPUT);
+  pinMode(11, OUTPUT);
   Serial.println("running");
 }
 
@@ -32,24 +38,31 @@ void loop() {
     //stuff
     while (btSerial.available()) {
       int i = btSerial.read();
+      Serial.println(i);
       if (millis() < 10) {
         digitalWrite(8, LOW);
         digitalWrite(9, LOW);
-        digitalWrite(10, LOW);
+       digitalWrite(10, LOW);
         et = 1;    
       }
       if ( i == '0' ) {                     // if 0 is recived from cereal, back
-        ton(500, 200);
+        sadtone();
+        tru--;
+        btSerial.write("you lost a point! D: you are now at   | ");
+        btSerial.println(tru);
         if ( f == 1 ) {
           b = 1;
           f = 0;
           et = 1;
         }
         b = 1;
-        motor(1700, 1300);
+        motor(1600, 1300);
       }
       if ( i == '1' ) {                     // if 1 received from sensor, forward
-        ton(2000, 200);
+        happytone();
+        tru++;
+        btSerial.write("you gained a point! :D you are now at | ");
+        btSerial.println(tru);
         if ( b == 1 ) {
           b = 0;
           f = 1;
@@ -57,18 +70,32 @@ void loop() {
         }
         Serial.println("run!");
         f = 1;
-        motor(1300, 1700);
+        motor(1200, 1700);
       }
-      if ( i == '2' ) {
+      if ( i == 'r' ) {
         digitalWrite(8, HIGH);
-      }      
-      if ( i == '3' ) {
+      }
+      if ( i == 't') {
+        digitalWrite(3, HIGH);
+      }     
+      if ( i == 'g' ) {
         digitalWrite(9, HIGH);
       }
-      if ( i == '4' ) {
+      if ( i == 'h') {
+        digitalWrite(4, HIGH);
+      }   
+      if ( i == 'b' ) {
         digitalWrite(10, HIGH);
       }
-      if ( i == '5' ) {
+      if ( i == 'n') {
+        digitalWrite(5, HIGH);
+      }   
+      if ( i == 'c' ) {
+        digitalWrite(3, LOW);
+        digitalWrite(4, LOW);
+        digitalWrite(5, LOW);
+      }
+      if ( i == 'x' ) {
         digitalWrite(8, LOW);
         digitalWrite(9, LOW);
         digitalWrite(10, LOW);
@@ -77,13 +104,25 @@ void loop() {
         ton(2000, 4000);
       }
       if ( i == '7' ) {
+        happytone();
       }
       if ( i == '8' ) {
-        happytone();
+        sadtone();
       }
       if ( i == '9' ) {
         et = 1;
-        sadtone();
+      }
+      if ( i == 'f') {
+        et = 1;
+        digitalWrite(8, LOW);
+        digitalWrite(9, LOW);
+        digitalWrite(10, LOW);
+        digitalWrite(3, LOW);
+        digitalWrite(4, LOW);
+        digitalWrite(5, LOW);
+        b = 0;
+        f = 0;
+        tru = 0;
       }
     }
   }
@@ -94,6 +133,7 @@ void loop() {
     f = 0;
     b = 0;
   }
+  Serial.println(tru);
 }
 
 
@@ -112,25 +152,25 @@ void motor(int l, int r) {
 }
 
 void ton(int t, int d) {
-  tone(4, t, d);                             // play tonbe
+  tone(11, t, d);                             // play tone
 }
 
 void happytone() {
-  tone(4, 262, 400);
+  tone(11, 262, 400);
   delay(150);
-  tone(4, 330, 400);
+  tone(11, 330, 400);
   delay(150);
-  tone(4, 392, 400);
+  tone(11, 392, 400);
   delay(150);
-  tone(4, 523, 400);
+  tone(11, 523, 400);
 }
 
 void sadtone() {
-  tone(4, 262, 400);
+  tone(11, 262, 400);
   delay(150);
-  tone(4, 196, 400);
+  tone(11, 196, 400);
   delay(150);
-  tone(4, 156, 400);
+  tone(11, 156, 400);
   delay(150);
-  tone(4, 131, 400);
+  tone(11, 131, 400);
 }
