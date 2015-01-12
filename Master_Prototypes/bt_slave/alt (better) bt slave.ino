@@ -79,9 +79,11 @@ void loop() {
       if ( i == '7' ) {
       }
       if ( i == '8' ) {
+        happytone();
       }
       if ( i == '9' ) {
         et = 1;
+        sadtone();
       }
     }
   }
@@ -111,4 +113,24 @@ void motor(int l, int r) {
 
 void ton(int t, int d) {
   tone(4, t, d);                             // play tonbe
+}
+
+void happytone() {
+  tone(4, 262, 400);
+  delay(150);
+  tone(4, 330, 400);
+  delay(150);
+  tone(4, 392, 400);
+  delay(150);
+  tone(4, 523, 400);
+}
+
+void sadtone() {
+  tone(4, 262, 400);
+  delay(150);
+  tone(4, 196, 400);
+  delay(150);
+  tone(4, 156, 400);
+  delay(150);
+  tone(4, 131, 400);
 }
