@@ -10,7 +10,8 @@ const int TIME_LIMIT = 5000; // ms
 const int NONE = 0;
 const int PUNCH = 1; // red
 const int JUMP = 2;  // green
-const int MAX_COMMAND = JUMP;
+const int ARM_RAISE = 3;  // green
+const int MAX_COMMAND = ARM_RAISE;
 
 bool gameStarted = false;
 int current_action = NONE;
@@ -21,15 +22,11 @@ void setup() {
   bluetoothSetup();    // RELIES ON BLUETOOTH CODE
   calibrationSetup();  // RELIES ON CALIBRATION CODE
   
-  //assignAction();
+  assignAction();
 }
 
 void loop() {
   // IF PLAYER TIMES OUT BEFORE COMPLETING ACTION, ACTION STATES WILL NOT BE RESET
-
-  armRaise();
-
-  return;
 
   if (millis() > past_time + TIME_LIMIT && gameStarted) {
     Serial.println("GOING BACKWARDS");
@@ -38,7 +35,8 @@ void loop() {
   }
 
   if ((current_action == PUNCH && punch()) ||
-    (current_action == JUMP && jump())) {
+    (current_action == JUMP && jump()) ||
+    (current_action == ARM_RAISE && armRaise())) {
     
     Serial.println("GOING FORWARDS");
     gameStarted = true;
@@ -49,7 +47,7 @@ void loop() {
 }
 
 void assignAction() {
-  int action = randomise(2) + 1;
+  int action = randomise(3) + 1;
  
   btSerial.write(LIGHT_ONE_OFF);
   btSerial.write(LIGHT_TWO_OFF);
@@ -61,6 +59,10 @@ void assignAction() {
     case JUMP: 
       btSerial.write(LIGHT_ONE_GREEN); 
       Serial.println("Jump now:");
+    break;
+    case ARM_RAISE: 
+      btSerial.write(LIGHT_ONE_BLUE); 
+      Serial.println("Raise arm now:");
     break;
   }
   
