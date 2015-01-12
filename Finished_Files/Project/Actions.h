@@ -1,0 +1,29 @@
+#ifndef _Actions_h
+#define _Actions_h
+
+#define ACCEL_PIN_X A0
+#define ACCEL_PIN_Y A1
+#define ACCEL_PIN_Z A2
+
+const float PUNCH_SPIKE_HIGH = 1.9;
+const float PUNCH_SPIKE_LOW = -1.9;
+const float JUMP_SPIKE_HIGH = 1.2;
+const float JUMP_SPIKE_LOW = -1.5;
+
+bool punchSpike = false;
+bool jumpSpike = false;
+bool jumpLow = false;
+
+// Detect jumping action
+bool jump();
+// Detect punch action
+bool punch();
+
+bool ARaiseStart = false;
+
+// Detect arm raise
+bool ARaise();
+
+float readGees(int pin, int correction);
+
+#endif
